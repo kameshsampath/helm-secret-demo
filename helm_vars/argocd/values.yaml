@@ -9,9 +9,14 @@ repoServer:
   volumes:
     - name: custom-tools
       emptyDir: {}
+    - name: helm-secrets-private-keys
+      secret:
+        secretName: helm-secrets-private-keys
   volumeMounts:
     - mountPath: /custom-tools
       name: custom-tools
+    - mountPath: /helm-secrets-private-keys/
+      name: helm-secrets-private-keys
 
   initContainers:
     - name: download-tools

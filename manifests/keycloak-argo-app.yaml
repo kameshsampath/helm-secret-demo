@@ -9,13 +9,15 @@ spec:
     server: 'https://kubernetes.default.svc'
   source:
     path: keycloak
+    # update this to your fork
     repoURL: 'https://github.com/kameshsampath/helm-secret-demo'
     targetRevision: HEAD
     helm:
       parameters: []
       valueFiles:
-        - helm_vars/keycloak/secrets.yaml
-        - helm_vars/keycloak/values.yaml
+        # The age encrypted secrets.yaml is decrypted using the `key.txt` that # is mounted on to argocd-repo-server pod via  # helm-secrets-private-keys volume
+        - secrets+age-import:///helm-secrets-private-keys/key.txt?../helm_vars/keycloak/secrets.yaml
+        - ../helm_vars/keycloak/values.yaml
   project: default
   syncPolicy:
     automated:
