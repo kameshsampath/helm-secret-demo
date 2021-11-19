@@ -20,22 +20,22 @@ spec:
       labels:
         {{- include "keycloak.selectorLabels" . | nindent 8 }}
     spec:
+      serviceAccountName: {{ include "keycloak.serviceAccountName" . }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }
-        serviceAccountName: {{ include "keycloak.serviceAccountName" . }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
         - name: KEYCLOAK_USER
           valueFrom: 
             secretKeyRef:
               key: KEYCLOAK_USER
-              name: {{ include "keycloak.adminCredentialsSecret" }}
+              name: {{ include "keycloak.adminCredentialsSecret" . }}
         - name: KEYCLOAK_PASSWORD
           valueFrom: 
             secretKeyRef:
               key: KEYCLOAK_PASSWORD
-              name: {{ include "keycloak.adminCredentialsSecret" }}
+              name: {{ include "keycloak.adminCredentialsSecret" . }}
         - name: PROXY_ADDRESS_FORWARDING
           value: "true"
         ports:
