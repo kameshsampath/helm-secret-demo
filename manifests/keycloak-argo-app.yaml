@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: keycloak
+spec:
+  destination:
+    name: ''
+    namespace: keycloak
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: keycloak
+    repoURL: 'https://github.com/kameshsampath/helm-secret-demo'
+    targetRevision: HEAD
+    helm:
+      parameters: []
+      valueFiles:
+        - helm_vars/keycloak/secrets.yaml
+        - helm_vars/keycloak/values.yaml
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
